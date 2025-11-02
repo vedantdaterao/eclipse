@@ -124,7 +124,7 @@ pqc_kem_keypair_t *pqc_kem_generate() {
 
 #define BUFFER_SIZE 1024
 
-int send_encrypted_message(int sock, uint8_t *key, const char *msg, int verbose) {
+int send_encrypted_message(int sock, uint8_t *key, const char *msg) {
     uint8_t nonce[12];
     randombytes_buf(nonce, 12);
 
@@ -140,7 +140,7 @@ int send_encrypted_message(int sock, uint8_t *key, const char *msg, int verbose)
     return 0;
 }
 
-ssize_t receive_encrypted_message(int sock, uint8_t *key, char *out, int verbose) {
+ssize_t receive_encrypted_message(int sock, uint8_t *key, char *out) {
     uint32_t net_len;
     if (read(sock, &net_len, sizeof(net_len)) != sizeof(net_len)) return -1;
     uint32_t msg_len = ntohl(net_len);
@@ -176,7 +176,7 @@ void *send_loop(void *arg) {
             break;
         }
 
-        send_encrypted_message(ctx->sock, ctx->hybrid_key, input, ctx->verbose);
+        send_encrypted_message(ctx->sock, ctx->hybrid_key, input);
     }
     pthread_exit(NULL);
 }
@@ -186,7 +186,7 @@ void *recv_loop(void *arg) {
     chat_args_t *ctx = (chat_args_t *)arg;
     char buf[BUFFER_SIZE];
     while (1) {
-        ssize_t len = receive_encrypted_message(ctx->sock, ctx->hybrid_key, buf, ctx->verbose);
+        ssize_t len = receive_encrypted_message(ctx->sock, ctx->hybrid_key, buf);
         if (len <= 0) {
             printf("\rDisconnected.\n");
             close(ctx->sock);

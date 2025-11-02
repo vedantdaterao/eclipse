@@ -1,16 +1,14 @@
-# Makefile for hybrid PQC ping-pong project (builds in build/ folder)
-
 CC = gcc
-# CFLAGS = -Wall -O2
+CFLAGS = -Wall -O2
 LIBS = -loqs -lcrypto -lsodium
 
 BUILD_DIR = build
 
-# Source files
-SRCS = server.c client.c
+# Source file
+SRCS = eclipse.c
 
-# Targets (executables in build/)
-TARGETS = $(BUILD_DIR)/server $(BUILD_DIR)/client
+# Target (executables in build/)
+TARGETS = $(BUILD_DIR)/eclipse
 
 all: $(BUILD_DIR) $(TARGETS)
 
@@ -18,13 +16,9 @@ all: $(BUILD_DIR) $(TARGETS)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-# Compile server
-$(BUILD_DIR)/server: server.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) server.c $(LIBS) -o $@
-
-# Compile client
-$(BUILD_DIR)/client: client.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) client.c $(LIBS) -o $@
+# Compile eclipse
+$(BUILD_DIR)/eclipse: eclipse.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) eclipse.c $(LIBS) -o $@
 
 # Clean build directory
 clean:

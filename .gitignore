@@ -54,4 +54,10 @@ dkms.conf
 # debug information files
 *.dwo
 
+.vscode/
+
+# build dir
+build/
+
+# liboqs library
 liboqs/
